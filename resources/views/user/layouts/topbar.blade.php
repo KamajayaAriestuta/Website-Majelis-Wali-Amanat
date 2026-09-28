@@ -3,7 +3,7 @@
         <div class="row align-items-center">
             <div class="col-lg-4 col-md-12">
                 <div class="logo">
-                    <a href="index.html">
+                    <a href="{{ route('user.dashboard') }}">
                         <img src="{{ asset('template_user/img/logo.png') }}" alt="Logo">
                     </a>
                 </div>

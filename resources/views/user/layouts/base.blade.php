@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
     <head>
         <meta charset="utf-8">
-        <title>Majelis Wali Amanat</title>
+        <title>Majelis Wali Amanat Universitas Brawijaya</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <meta content="Construction Company Website Template" name="keywords">
-        <meta content="Construction Company Website Template" name="description">
+        <meta content="Majelis Wali Amanat, MWA, Universitas Brawijaya, PTN-BH, Komite Audit" name="keywords">
+        <meta content="Website resmi Majelis Wali Amanat (MWA) Universitas Brawijaya: anggota, kegiatan, dan produk hukum." name="description">
 
         <!-- Favicon -->
         <link href="{{ asset('template_user/img/favicon.ico') }}" rel="icon">
@@ -27,6 +27,7 @@
 
         <!-- Template Stylesheet -->
         <link href="{{ asset('template_user/css/style.css') }}" rel="stylesheet">
+        @stack('styles')
     </head>
 
     <body>

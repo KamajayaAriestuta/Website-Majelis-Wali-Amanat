@@ -14,9 +14,21 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $kegiatan = Kegiatan::all();
-        $pimpinan = AnggotaMWA::whereIn('jabatan', ['Ketua', 'Wakil Ketua', 'Sekretaris', 'Sekretaris Eksekutif'])->get();
-        return view('user.dashboard', compact('pimpinan', 'kegiatan'));
+        $kegiatan = Kegiatan::orderByDesc('tanggal')->orderByDesc('id')->take(3)->get();
+        $pimpinan = AnggotaMWA::whereIn('jabatan', ['Ketua', 'Wakil Ketua', 'Sekretaris', 'Sekretaris Eksekutif'])
+            ->orderByRaw("FIELD(jabatan, 'Ketua', 'Wakil Ketua', 'Sekretaris', 'Sekretaris Eksekutif')")
+            ->get();
+        $peraturanTerbaru = Peraturan::orderByDesc('tanggal_ditetapkan')->take(4)->get();
+        $keputusanTerbaru = Keputusan::orderByDesc('tanggal_ditetapkan')->take(4)->get();
+
+        $statistik = [
+            'anggota_mwa' => AnggotaMWA::count(),
+            'anggota_ka' => AnggotaKA::count(),
+            'produk_hukum' => Peraturan::count() + Keputusan::count(),
+            'kegiatan' => Kegiatan::count(),
+        ];
+
+        return view('user.dashboard', compact('pimpinan', 'kegiatan', 'peraturanTerbaru', 'keputusanTerbaru', 'statistik'));
     }
     public function about()
     {

@@ -12,7 +12,7 @@
             <div class="col-md-6 col-lg-4">
                 <div class="footer-link">
                     <h2>Website Terkait</h2>
-                    <a href="">Universitas Brawijaya</a>
+                    <a href="https://ub.ac.id" target="_blank" rel="noopener">Universitas Brawijaya</a>
                     <a href="">Senat Akademik Universitas</a>
                     <a href="">Divisi Hukum</a>
                 </div>
@@ -20,11 +20,11 @@
             <div class="col-md-6 col-lg-4">
                 <div class="footer-link">
                     <h2>Halaman Penting</h2>
-                    <a href="">Tentang</a>
-                    <a href="">Anggota MWA</a>
-                    <a href="">Anggota KA</a>
-                    <a href="">Kegiatan</a>
-                    <a href="">Kontak</a>
+                    <a href="{{ route('user.about') }}">Tentang</a>
+                    <a href="{{ route('user.mwateam') }}">Anggota MWA</a>
+                    <a href="{{ route('user.kateam') }}">Anggota KA</a>
+                    <a href="{{ route('user.kegiatan') }}">Kegiatan</a>
+                    <a href="{{ route('user.kontak') }}">Kontak</a>
                 </div>
             </div>
         </div>
