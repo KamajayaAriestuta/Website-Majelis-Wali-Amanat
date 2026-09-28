@@ -21,7 +21,6 @@
     </video>
     <div class="hm-hero-overlay"></div>
     <div class="container hm-hero-content">
-        <span class="hm-eyebrow">Universitas Brawijaya &middot; PTN Badan Hukum</span>
         <h1>Majelis Wali Amanat</h1>
         <p>
             Organ Universitas Brawijaya yang menyusun, merumuskan, dan menetapkan kebijakan,
