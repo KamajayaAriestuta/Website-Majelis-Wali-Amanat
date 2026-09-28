@@ -13,11 +13,11 @@ class AnggotaMWA extends Controller
     public function index()
     {
         $anggota = AnggotaMWAModel::all();
-        return view('admin.AnggotaMWA.show', compact('anggota'));
+        return view('admin.anggotaMWA.show', compact('anggota'));
     }
     public function create()
     {
-        return view('admin.AnggotaMWA.create');
+        return view('admin.anggotaMWA.create');
     }
 
     public function store(Request $request)
@@ -37,17 +37,17 @@ class AnggotaMWA extends Controller
         // Simpan data ke database
         AnggotaMWAModel::create($validatedData);
 
-        return redirect()->route('admin.AnggotaMWA')->with('success', 'Anggota MWA berhasil ditambahkan.');
+        return redirect()->route('admin.anggotaMWA')->with('success', 'Anggota MWA berhasil ditambahkan.');
     }
     public function show($id)
     {
         // Tidak ada halaman detail, kembali ke daftar anggota
-        return redirect()->route('admin.AnggotaMWA');
+        return redirect()->route('admin.anggotaMWA');
     }
     public function edit($id)
     {
         $anggotaMWA = AnggotaMWAModel::findOrFail($id);
-        return view('admin.AnggotaMWA.edit', compact('anggotaMWA'));
+        return view('admin.anggotaMWA.edit', compact('anggotaMWA'));
     }
     public function update(Request $request, $id)
     {
@@ -75,7 +75,7 @@ class AnggotaMWA extends Controller
         // Update data di database
         $anggotaMWA->update($validatedData);
 
-        return redirect()->route('admin.AnggotaMWA')->with('success', 'Anggota MWA berhasil diperbarui.');
+        return redirect()->route('admin.anggotaMWA')->with('success', 'Anggota MWA berhasil diperbarui.');
     }
     public function destroy($id)
     {
@@ -84,7 +84,7 @@ class AnggotaMWA extends Controller
         $this->hapusFile($anggotaMWA->sk_pengangkatan);
         $anggotaMWA->delete();
 
-        return redirect()->route('admin.AnggotaMWA')->with('success', 'Anggota MWA berhasil dihapus.');
+        return redirect()->route('admin.anggotaMWA')->with('success', 'Anggota MWA berhasil dihapus.');
     }
 
     private function rules()

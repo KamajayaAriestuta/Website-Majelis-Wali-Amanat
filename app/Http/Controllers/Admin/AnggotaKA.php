@@ -13,11 +13,11 @@ class AnggotaKA extends Controller
     public function index()
     {
         $anggota = AnggotaKAModel::all();
-        return view('admin.AnggotaKA.show', compact('anggota'));
+        return view('admin.anggotaKA.show', compact('anggota'));
     }
     public function create()
     {
-        return view('admin.AnggotaKA.create');
+        return view('admin.anggotaKA.create');
     }
 
     public function store(Request $request)
@@ -37,17 +37,17 @@ class AnggotaKA extends Controller
         // Simpan data ke database
         AnggotaKAModel::create($validatedData);
 
-        return redirect()->route('admin.AnggotaKA')->with('success', 'Anggota KA berhasil ditambahkan.');
+        return redirect()->route('admin.anggotaKA')->with('success', 'Anggota KA berhasil ditambahkan.');
     }
     public function show($id)
     {
         // Tidak ada halaman detail, kembali ke daftar anggota
-        return redirect()->route('admin.AnggotaKA');
+        return redirect()->route('admin.anggotaKA');
     }
     public function edit($id)
     {
         $anggotaKA = AnggotaKAModel::findOrFail($id);
-        return view('admin.AnggotaKA.edit', compact('anggotaKA'));
+        return view('admin.anggotaKA.edit', compact('anggotaKA'));
     }
     public function update(Request $request, $id)
     {
@@ -75,7 +75,7 @@ class AnggotaKA extends Controller
         // Update data di database
         $anggotaKA->update($validatedData);
 
-        return redirect()->route('admin.AnggotaKA')->with('success', 'Anggota KA berhasil diperbarui.');
+        return redirect()->route('admin.anggotaKA')->with('success', 'Anggota KA berhasil diperbarui.');
     }
     public function destroy($id)
     {
@@ -84,7 +84,7 @@ class AnggotaKA extends Controller
         $this->hapusFile($anggotaKA->sk_pengangkatan);
         $anggotaKA->delete();
 
-        return redirect()->route('admin.AnggotaKA')->with('success', 'Anggota KA berhasil dihapus.');
+        return redirect()->route('admin.anggotaKA')->with('success', 'Anggota KA berhasil dihapus.');
     }
 
     private function rules()
