@@ -30,7 +30,7 @@
               <br>
               <div class="mb-3">
                   <label for="thumbnail" class="text-sm font-medium text-gray-700 mt-3">Thumbnail</label>
-                  <input type="file" name="thumbnail" id="thumbnail" class="w-full border rounded px-3 py-2 mt-1">
+                  <input type="file" name="thumbnail" id="thumbnail" accept="image/*" class="w-full border rounded px-3 py-2 mt-1">
               </div>
               <br>
               <div class="mb-3">

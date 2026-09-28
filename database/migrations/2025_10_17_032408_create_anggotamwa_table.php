@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('nama');
             $table->string('jabatan');
             $table->string('unsur');
-            $table->string('sk_pengangkatan');
-            $table->string('nomor_sk');
+            $table->string('sk_pengangkatan')->nullable();
+            $table->string('nomor_sk')->nullable();
             $table->string('foto')->nullable();
             $table->timestamps();
         });

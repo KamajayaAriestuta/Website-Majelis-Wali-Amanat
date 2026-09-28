@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('jabatan');
-            $table->string('sk_pengangkatan');
+            $table->string('sk_pengangkatan')->nullable();
             $table->string('nomor_sk');
             $table->string('foto')->nullable();
             $table->timestamps();

@@ -13,112 +13,102 @@ class AnggotaMWA extends Controller
     public function index()
     {
         $anggota = AnggotaMWAModel::all();
-        return view('admin.anggotaMWA.show', compact('anggota'));
+        return view('admin.AnggotaMWA.show', compact('anggota'));
     }
     public function create()
     {
-        return view('admin.anggotaMWA.create');
+        return view('admin.AnggotaMWA.create');
     }
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'nama' => 'required|string|max:255',
-            'jabatan' => 'required|string|max:255',
-            'unsur' => 'required|string|max:255',
-            'nomor_sk' => 'required|string|max:255',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'sk_pengangkatan' => 'nullable|file|mimes:pdf,doc,docx|max:5120', // 5MB max untuk file SK
-        ]);
-        
+        $validatedData = $request->validate($this->rules());
+
         // Handle upload foto
         if ($request->hasFile('foto')) {
-            $fotoFile = $request->file('foto');
-            $fotoName = time() . '_' . Str::slug(pathinfo($fotoFile->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $fotoFile->getClientOriginalExtension();
-            $fotoPath = $fotoFile->storeAs('foto-anggota-mwa', $fotoName, 'public');
-            $validatedData['foto'] = $fotoPath;
+            $validatedData['foto'] = $this->uploadFile($request->file('foto'), 'foto-anggota-mwa');
         }
 
         // Handle upload SK Pengangkatan
         if ($request->hasFile('sk_pengangkatan')) {
-            $skFile = $request->file('sk_pengangkatan');
-            $skOriginalName = pathinfo($skFile->getClientOriginalName(), PATHINFO_FILENAME);
-            $extension = $skFile->getClientOriginalExtension();
-            $skFilename = Str::slug($skOriginalName) . '.' . $extension;
-
-            $skPath = $skFile->storeAs('sk-pengangkatan-mwa', $skFilename, 'public');
-            $validatedData['sk_pengangkatan'] = $skPath;
+            $validatedData['sk_pengangkatan'] = $this->uploadFile($request->file('sk_pengangkatan'), 'sk-pengangkatan-mwa');
         }
 
         // Simpan data ke database
         AnggotaMWAModel::create($validatedData);
 
-        return redirect()->route('admin.anggotaMWA')->with('success', 'Anggota MWA berhasil ditambahkan.');
+        return redirect()->route('admin.AnggotaMWA')->with('success', 'Anggota MWA berhasil ditambahkan.');
     }
     public function show($id)
     {
-        //   
-        return view('admin.anggotaMWA.show', compact('id'));
+        // Tidak ada halaman detail, kembali ke daftar anggota
+        return redirect()->route('admin.AnggotaMWA');
     }
     public function edit($id)
     {
         $anggotaMWA = AnggotaMWAModel::findOrFail($id);
-        return view('admin.anggotaMWA.edit', compact('anggotaMWA'));
+        return view('admin.AnggotaMWA.edit', compact('anggotaMWA'));
     }
     public function update(Request $request, $id)
     {
         $anggotaMWA = AnggotaMWAModel::findOrFail($id);
-        $validatedData = $request->validate([
+        $validatedData = $request->validate($this->rules());
+
+        // Handle upload foto
+        if ($request->hasFile('foto')) {
+            // Hapus foto lama jika ada
+            $this->hapusFile($anggotaMWA->foto);
+            $validatedData['foto'] = $this->uploadFile($request->file('foto'), 'foto-anggota-mwa');
+        } else {
+            unset($validatedData['foto']);
+        }
+
+        // Handle upload SK Pengangkatan
+        if ($request->hasFile('sk_pengangkatan')) {
+            // Hapus SK lama jika ada
+            $this->hapusFile($anggotaMWA->sk_pengangkatan);
+            $validatedData['sk_pengangkatan'] = $this->uploadFile($request->file('sk_pengangkatan'), 'sk-pengangkatan-mwa');
+        } else {
+            unset($validatedData['sk_pengangkatan']);
+        }
+
+        // Update data di database
+        $anggotaMWA->update($validatedData);
+
+        return redirect()->route('admin.AnggotaMWA')->with('success', 'Anggota MWA berhasil diperbarui.');
+    }
+    public function destroy($id)
+    {
+        $anggotaMWA = AnggotaMWAModel::findOrFail($id);
+        $this->hapusFile($anggotaMWA->foto);
+        $this->hapusFile($anggotaMWA->sk_pengangkatan);
+        $anggotaMWA->delete();
+
+        return redirect()->route('admin.AnggotaMWA')->with('success', 'Anggota MWA berhasil dihapus.');
+    }
+
+    private function rules()
+    {
+        return [
             'nama' => 'required|string|max:255',
             'jabatan' => 'required|string|max:255',
             'unsur' => 'required|string|max:255',
             'nomor_sk' => 'nullable|string|max:255',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'sk_pengangkatan' => 'nullable|file|mimes:pdf,doc,docx|max:5120', // 5MB max untuk file SK
-        ]);
-
-       // Handle upload foto
-        if ($request->hasFile('foto')) {
-            // Hapus foto lama jika ada
-            if (!empty($anggotaMWA->foto) && Storage::disk('public')->exists('foto-anggota-mwa/' . $anggotaMWA->foto)) {
-                Storage::disk('public')->delete('foto-anggota-mwa/' . $anggotaMWA->foto);
-            }
-
-            // Upload foto baru
-            $fotoFile = $request->file('foto');
-            $fotoName = time() . '_' . Str::slug(pathinfo($fotoFile->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $fotoFile->getClientOriginalExtension();
-            $fotoPath = $fotoFile->storeAs('foto-anggota-mwa', $fotoName, 'public');
-            $validatedData['foto'] = $fotoPath;
-        }
-
-        // Handle upload SK Pengangkatan
-        if ($request->hasFile('sk_pengangkatan')) {
-            // Hapus SK lama jika ada
-            if (!empty($anggotaMWA->sk_pengangkatan) && Storage::disk('public')->exists('sk-pengangkatan-mwa/' . $anggotaMWA->sk_pengangkatan)) {
-                Storage::disk('public')->delete('sk-pengangkatan-mwa/' . $anggotaMWA->sk_pengangkatan);
-            }
-
-            // Upload SK baru
-            $skFile = $request->file('sk_pengangkatan');
-            $skOriginalName = pathinfo($skFile->getClientOriginalName(), PATHINFO_FILENAME);
-            $extension = $skFile->getClientOriginalExtension();
-            $skFilename = time() . '_' . Str::slug($skOriginalName) . '.' . $extension;
-
-            $skFile->storeAs('sk-pengangkatan', $skFilename, 'public');
-            $skPath = $skFile->storeAs('sk-pengangkatan-mwa', $skFilename, 'public');
-            $validatedData['sk_pengangkatan'] = $skPath;
-        }
-
-        // Update data di database
-        $anggotaMWA->update($validatedData);
-
-        return redirect()->route('admin.anggotaMWA')->with('success', 'Anggota MWA berhasil diperbarui.');
+        ];
     }
-    public function destroy($id)
-    {
-        $anggotaMWA = AnggotaMWAModel::findOrFail($id);
-        $anggotaMWA->delete();
 
-        return redirect()->route('admin.anggotaMWA')->with('success', 'Anggota MWA berhasil dihapus.');
+    private function uploadFile($file, $folder)
+    {
+        $fileName = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+        return $file->storeAs($folder, $fileName, 'public');
+    }
+
+    private function hapusFile($path)
+    {
+        if (!empty($path) && Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
+        }
     }
 }

@@ -31,14 +31,11 @@ class Kegiatan extends Controller
         ]);
         //Handle upload thumbnail
         if ($request->hasFile('thumbnail')) {
-            $thumbnailFile = $request->file('thumbnail');
-            $thumbnailName = time() . '_' . Str::slug(pathinfo($thumbnailFile->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $thumbnailFile->getClientOriginalExtension();
-            $thumbnailPath = $thumbnailFile->storeAs('thumbnails', $thumbnailName, 'public');
-            $validatedData['thumbnail'] = $thumbnailPath;
+            $validatedData['thumbnail'] = $this->uploadThumbnail($request->file('thumbnail'));
         }
         // Simpan data kegiatan ke database
         KegiatanModel::create($validatedData);
-        return redirect()->route('admin.kegiatan.show', KegiatanModel::latest()->first()->id)->with('success', 'Kegiatan berhasil ditambahkan.');
+        return redirect()->route('admin.kegiatan.show')->with('success', 'Kegiatan berhasil ditambahkan.');
     }
     public function edit($id)
     {
@@ -62,10 +59,15 @@ class Kegiatan extends Controller
             if ($kegiatan->thumbnail) {
                 Storage::disk('public')->delete($kegiatan->thumbnail);
             }
+            // Upload thumbnail baru
+            $validatedData['thumbnail'] = $this->uploadThumbnail($request->file('thumbnail'));
+        } else {
+            // Tidak ada file baru, pertahankan thumbnail lama
+            unset($validatedData['thumbnail']);
         }
         // Update data kegiatan
         $kegiatan->update($validatedData);
-        return redirect()->route('admin.kegiatan.show', $kegiatan->id)->with('success', 'Kegiatan berhasil diperbarui.');
+        return redirect()->route('admin.kegiatan.show')->with('success', 'Kegiatan berhasil diperbarui.');
     }
 
     public function destroy($id)
@@ -77,6 +79,12 @@ class Kegiatan extends Controller
             Storage::disk('public')->delete($kegiatan->thumbnail);
         }
         $kegiatan->delete();
-        return redirect()->route('admin.kegiatan.show', $kegiatan->id)->with('success', 'Kegiatan berhasil dihapus.');
+        return redirect()->route('admin.kegiatan.show')->with('success', 'Kegiatan berhasil dihapus.');
+    }
+
+    private function uploadThumbnail($thumbnailFile)
+    {
+        $thumbnailName = time() . '_' . Str::slug(pathinfo($thumbnailFile->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $thumbnailFile->getClientOriginalExtension();
+        return $thumbnailFile->storeAs('thumbnails', $thumbnailName, 'public');
     }
 }

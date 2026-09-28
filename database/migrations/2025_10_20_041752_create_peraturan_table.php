@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('perihal');
             $table->string('nomor');
             $table->date('tanggal_ditetapkan');
-            $table->string('dokumen');
+            $table->string('dokumen')->nullable();
             $table->timestamps();
         });
     }

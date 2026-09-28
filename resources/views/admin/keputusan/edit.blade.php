@@ -27,7 +27,7 @@
               <br>
               <div class="mb-3">
                   <label for="dokumen" class="text-sm font-medium text-gray-700 mt-3">File Keputusan</label>
-                  <input type="file" name="dokumen" id="dokumen" class="w-full border rounded px-3 py-2 mt-1">
+                  <input type="file" name="dokumen" id="dokumen" accept="application/pdf" class="w-full border rounded px-3 py-2 mt-1">
               </div>
               <br>
               <div class="text-right mb-4">
