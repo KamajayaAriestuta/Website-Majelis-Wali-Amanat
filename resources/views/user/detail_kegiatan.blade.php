@@ -1,50 +1,58 @@
 @extends('user.layouts.base')
 
-@section('title', '')
-@section('header', '')
-@section ('content')
+@section('content')
+<x-user.page-header :judul="$kegiatan->judul" :label="\Illuminate\Support\Str::limit($kegiatan->judul, 40)"
+    :jejak="['Kegiatan' => route('user.kegiatan')]">
+    <x-slot:meta>
+        <span><i class="far fa-calendar"></i> <x-user.tanggal :value="$kegiatan->tanggal" /></span>
+        @if ($kegiatan->kategori)
+            <span><i class="fa fa-tag"></i> {{ $kegiatan->kategori }}</span>
+        @endif
+    </x-slot:meta>
+</x-user.page-header>
 
-<!-- About Start -->
-<div class="container-fluid about">
-    <div class="container py-5">
-        <div class="row g-5">
-            <div class="col-xl-8">
-                <div class="h-100">
-                    <img src="{{ asset('storage/'.$kegiatan->thumbnail) }}" class="img-fluid w-100" style="object-fit: cover;" alt="Image">
-                    <p class="text-dark text-justify mt-3"> {!! $kegiatan->text !!}</p>
-                </div>
-            </div>
-            <div class="col-xl-4">
-                <h5 class="text-uppercase text-primary">Berita dan Kegiatan</h5>
-                <h1 class="mb-4">Majelis Wali Amanat Lainnya</h1>
-                <div class="tab-class p-4 bg-dark">
-                    <ul class="nav d-flex mb-2">
-                    </ul>
-                    <div class="tab-content">
-                        @foreach ($semuaKegiatan as $data_semuaKegiatan)
-                        <div id="tab-1" class="tab-pane fade show p-0 active">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="d-flex">
-                                        <div class="text-start my-auto">
-                                            <h5 class="text-uppercase text-white mb-3">{{$data_semuaKegiatan->judul}}</h5>
-                                            <div class="d-flex align-items-center justify-content-start">
-                                                <a class="btn-hover-bg btn btn-primary text-white py-2 px-4 mb-5" href="{{ route('user.kegiatan.detail', $data_semuaKegiatan->id) }}" target="_blank">Read More</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
+<!-- Detail Start -->
+<section class="hm-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mb-5 mb-lg-0">
+                <article class="mw-article">
+                    @if ($kegiatan->thumbnail)
+                    <a href="{{ asset('storage/' . $kegiatan->thumbnail) }}" data-lightbox="kegiatan" class="mw-article-img">
+                        <img src="{{ asset('storage/' . $kegiatan->thumbnail) }}" alt="{{ $kegiatan->judul }}">
+                    </a>
+                    @endif
+                    <div class="mw-article-body">
+                        {!! $kegiatan->text !!}
                     </div>
-                </div>
+                </article>
+                <a href="{{ route('user.kegiatan') }}" class="hm-link mt-4"><i class="fa fa-arrow-left"></i> Kembali ke daftar kegiatan</a>
             </div>
+
+            <aside class="col-lg-4">
+                <div class="mw-sidebar">
+                    <h3>Kegiatan Lainnya</h3>
+                    @forelse ($kegiatanLain as $item)
+                    <a href="{{ route('user.kegiatan.detail', $item->id) }}" class="mw-mini-news">
+                        <div class="mw-mini-news-img">
+                            @if ($item->thumbnail)
+                                <img src="{{ asset('storage/' . $item->thumbnail) }}" alt="" loading="lazy">
+                            @else
+                                <div class="hm-placeholder"><i class="fa fa-image"></i></div>
+                            @endif
+                        </div>
+                        <div>
+                            <strong>{{ $item->judul }}</strong>
+                            <span><x-user.tanggal :value="$item->tanggal" /></span>
+                        </div>
+                    </a>
+                    @empty
+                    <div class="hm-empty hm-empty-sm">Belum ada kegiatan lain.</div>
+                    @endforelse
+                </div>
+            </aside>
         </div>
     </div>
-</div>
-<!-- About End -->
-
-
-
+</section>
+<!-- Detail End -->
 @endsection

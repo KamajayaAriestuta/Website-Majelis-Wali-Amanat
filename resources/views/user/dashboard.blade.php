@@ -1,9 +1,5 @@
 @extends('user.layouts.base')
 
-@push('styles')
-<link href="{{ asset('template_user/css/home.css') }}" rel="stylesheet">
-@endpush
-
 @php
     $formatTanggal = fn ($tanggal) => rescue(
         fn () => \Carbon\Carbon::parse($tanggal)->locale('id')->translatedFormat('d F Y'),
@@ -38,7 +34,7 @@
 <!-- Statistik Start -->
 <section class="hm-stats">
     <div class="container">
-        <div class="hm-stats-grid">
+        <div class="hm-stats-grid {{ config('mwa.tampilkan_kegiatan') ? '' : 'hm-stats-grid-3' }}">
             <a href="{{ route('user.mwateam') }}" class="hm-stat">
                 <i class="fa fa-users"></i>
                 <strong>{{ $statistik['anggota_mwa'] }}</strong>
@@ -54,11 +50,13 @@
                 <strong>{{ $statistik['produk_hukum'] }}</strong>
                 <span>Produk Hukum</span>
             </a>
+            @if (config('mwa.tampilkan_kegiatan'))
             <a href="{{ route('user.kegiatan') }}" class="hm-stat">
                 <i class="fa fa-calendar-check"></i>
                 <strong>{{ $statistik['kegiatan'] }}</strong>
                 <span>Kegiatan</span>
             </a>
+            @endif
         </div>
     </div>
 </section>
@@ -136,6 +134,7 @@
 <!-- Pimpinan End -->
 
 <!-- Kegiatan Start -->
+@if (config('mwa.tampilkan_kegiatan'))
 <section class="hm-section">
     <div class="container">
         <div class="hm-section-head">
@@ -175,6 +174,7 @@
         </div>
     </div>
 </section>
+@endif
 <!-- Kegiatan End -->
 
 <!-- Produk Hukum Start -->

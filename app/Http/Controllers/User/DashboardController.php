@@ -36,34 +36,59 @@ class DashboardController extends Controller
     }
     public function mwateam()
     {
-        $pimpinan = AnggotaMWA::whereIn('jabatan', ['Ketua', 'Wakil Ketua', 'Sekretaris', 'Sekretaris Eksekutif'])->get();
-        $anggota = AnggotaMWA::whereIn('jabatan', ['Anggota'])->get();
+        $urutanPimpinan = ['Ketua', 'Wakil Ketua', 'Sekretaris', 'Sekretaris Eksekutif'];
+
+        [$pimpinan, $anggota] = AnggotaMWA::orderBy('id')->get()
+            ->partition(fn ($item) => in_array($item->jabatan, $urutanPimpinan));
+
+        $pimpinan = $pimpinan->sortBy(fn ($item) => array_search($item->jabatan, $urutanPimpinan))->values();
+        $anggota = $anggota->values();
+
         return view('user.anggota_mwa', compact('pimpinan', 'anggota'));
     }
     public function kateam()
     {
-        $anggota = AnggotaKA::all();
-        return view('user.anggota_ka', compact('anggota'));
+        $urutanPimpinan = ['Ketua', 'Wakil Ketua', 'Sekretaris'];
+
+        [$pimpinan, $anggota] = AnggotaKA::orderBy('id')->get()
+            ->partition(fn ($item) => in_array($item->jabatan, $urutanPimpinan));
+
+        $pimpinan = $pimpinan->sortBy(fn ($item) => array_search($item->jabatan, $urutanPimpinan))->values();
+        $anggota = $anggota->values();
+
+        return view('user.anggota_ka', compact('pimpinan', 'anggota'));
     }
-    public function kegiatan()
+    public function kegiatan(Request $request)
     {
-        $kegiatan = Kegiatan::all();
-        return view('user.kegiatan', compact('kegiatan'));
+        $cari = trim((string) $request->query('q'));
+        $kategori = $request->query('kategori');
+
+        $kegiatan = Kegiatan::query()
+            ->when($cari !== '', fn ($query) => $query->where('judul', 'like', '%' . $cari . '%'))
+            ->when($kategori, fn ($query) => $query->where('kategori', $kategori))
+            ->orderByDesc('tanggal')
+            ->orderByDesc('id')
+            ->paginate(9)
+            ->withQueryString();
+
+        $daftarKategori = Kegiatan::whereNotNull('kategori')->distinct()->orderBy('kategori')->pluck('kategori');
+
+        return view('user.kegiatan', compact('kegiatan', 'daftarKategori', 'cari', 'kategori'));
     }
     public function show_kegiatan($id)
     {
-        $semuaKegiatan = Kegiatan::all();
         $kegiatan = Kegiatan::findOrFail($id);
-        return view('user.detail_kegiatan', compact('kegiatan', 'semuaKegiatan'));
+        $kegiatanLain = Kegiatan::whereKeyNot($kegiatan->id)->orderByDesc('tanggal')->orderByDesc('id')->limit(5)->get();
+        return view('user.detail_kegiatan', compact('kegiatan', 'kegiatanLain'));
     }
     public function peraturan()
     {
-        $peraturan = Peraturan::all();
+        $peraturan = Peraturan::orderByDesc('tanggal_ditetapkan')->orderByDesc('id')->get();
         return view('user.peraturan', compact('peraturan'));
     }
     public function keputusan()
     {
-        $keputusan = Keputusan::all();
+        $keputusan = Keputusan::orderByDesc('tanggal_ditetapkan')->orderByDesc('id')->get();
         return view('user.keputusan', compact('keputusan'));
     }
     public function kontak()

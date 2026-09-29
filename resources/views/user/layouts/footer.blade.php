@@ -23,7 +23,9 @@
                     <a href="{{ route('user.about') }}">Tentang</a>
                     <a href="{{ route('user.mwateam') }}">Anggota MWA</a>
                     <a href="{{ route('user.kateam') }}">Anggota KA</a>
+                    @if (config('mwa.tampilkan_kegiatan'))
                     <a href="{{ route('user.kegiatan') }}">Kegiatan</a>
+                    @endif
                     <a href="{{ route('user.kontak') }}">Kontak</a>
                 </div>
             </div>

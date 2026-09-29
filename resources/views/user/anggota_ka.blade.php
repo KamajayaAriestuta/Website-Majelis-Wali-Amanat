@@ -1,33 +1,62 @@
 @extends('user.layouts.base')
-@section('content')
 
-<!-- Team Start -->
-<div class="team">
+@section('content')
+<!-- Page Header Start -->
+<x-user.page-header judul="Komite Audit" label="Anggota Komite Audit"
+    deskripsi="Komite yang dibentuk Majelis Wali Amanat untuk membantu pelaksanaan fungsi pengawasan di bidang nonakademik Universitas Brawijaya.">
+    <div><strong>{{ $pimpinan->count() + $anggota->count() }}</strong><span>Total Anggota</span></div>
+    <div><strong>{{ $pimpinan->count() }}</strong><span>Pimpinan</span></div>
+    <a href="{{ route('user.mwateam') }}" class="mw-hero-link">
+        <strong><i class="fa fa-users"></i></strong><span>Lihat Anggota MWA <i class="fa fa-arrow-right"></i></span>
+    </a>
+</x-user.page-header>
+<!-- Page Header End -->
+
+<!-- Pimpinan Start -->
+<section class="hm-section">
     <div class="container">
-        <div class="section-header text-center">
-        <h2>Anggota</h2>
-        <p>Komite Audit</p>
+        <div class="hm-section-head">
+            <div>
+                <span class="hm-kicker">Pimpinan</span>
+                <h2 class="hm-title">Pimpinan Komite Audit</h2>
+            </div>
         </div>
         <div class="row">
-            @foreach ($anggota as $anggotaKA)
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="team-item">
-                    <div class="team-img">
-                        <img src="{{ asset('storage/' . $anggotaKA->foto) }}" alt="Team Image">
-                    </div>
-                    <div class="team-text">
-                        <h2>{{ $anggotaKA->nama }}</h2>
-                        <p>{{ $anggotaKA->jabatan }}</p>
-                    </div>
-                    <div class="team-social">
-                        <a class="text-white" href=""><i class="fa-solid fa-user"></i></a>
-                    </div>
-                </div>
+            @forelse ($pimpinan as $pimpinanKA)
+            <div class="col-lg-3 col-sm-6 mb-4">
+                @include('user.partials.kartu_anggota', ['orang' => $pimpinanKA, 'label' => $pimpinanKA->jabatan, 'keterangan' => 'Komite Audit'])
             </div>
-            @endforeach
+            @empty
+            <div class="col-12">
+                <div class="hm-empty">Data pimpinan belum tersedia.</div>
+            </div>
+            @endforelse
         </div>
     </div>
-</div>
-<!-- Team End -->
+</section>
+<!-- Pimpinan End -->
 
+<!-- Anggota Start -->
+<section class="hm-section hm-section-alt">
+    <div class="container">
+        <div class="hm-section-head">
+            <div>
+                <span class="hm-kicker">Anggota</span>
+                <h2 class="hm-title">Anggota Komite Audit</h2>
+            </div>
+        </div>
+        <div class="row">
+            @forelse ($anggota as $anggotaKA)
+            <div class="col-lg-3 col-sm-6 mb-4">
+                @include('user.partials.kartu_anggota', ['orang' => $anggotaKA, 'label' => $anggotaKA->jabatan, 'keterangan' => 'Komite Audit'])
+            </div>
+            @empty
+            <div class="col-12">
+                <div class="hm-empty">Data anggota belum tersedia.</div>
+            </div>
+            @endforelse
+        </div>
+    </div>
+</section>
+<!-- Anggota End -->
 @endsection

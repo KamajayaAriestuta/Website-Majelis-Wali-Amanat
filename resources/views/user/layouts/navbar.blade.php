@@ -12,9 +12,11 @@
                     <a href="/about" class="nav-item nav-link {{ request()->is('about') ? 'active' : '' }}">Tentang</a>
                     <a href="/anggota_mwa" class="nav-item nav-link {{ request()->is('anggota_mwa') ? 'active' : '' }}">Anggota MWA</a>
                     <a href="/anggota_ka" class="nav-item nav-link {{ request()->is('anggota_ka') ? 'active' : '' }}">Anggota KA</a>
-                    <a href="/kegiatan" class="nav-item nav-link {{ request()->is('kegiatan') ? 'active' : '' }}">Kegiatan</a>
+                    @if (config('mwa.tampilkan_kegiatan'))
+                    <a href="/kegiatan" class="nav-item nav-link {{ request()->is('kegiatan', 'kegiatan/*') ? 'active' : '' }}">Kegiatan</a>
+                    @endif
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle {{ request()->is('produk_hukum') ? 'active' : '' }}" data-toggle="dropdown">Produk Hukum</a>
+                        <a href="#" class="nav-link dropdown-toggle {{ request()->is('peraturan', 'keputusan') ? 'active' : '' }}" data-toggle="dropdown">Produk Hukum</a>
                         <div class="dropdown-menu">
                             <a href="{{ route('user.peraturan') }}" class="dropdown-item">Peraturan</a>
                             <a href="{{ route('user.keputusan') }}" class="dropdown-item">Keputusan</a>

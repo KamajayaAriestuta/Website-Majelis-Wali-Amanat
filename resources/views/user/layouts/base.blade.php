@@ -27,6 +27,8 @@
 
         <!-- Template Stylesheet -->
         <link href="{{ asset('template_user/css/style.css') }}" rel="stylesheet">
+        <link href="{{ asset('template_user/css/home.css') }}" rel="stylesheet">
+        <link href="{{ asset('template_user/css/halaman.css') }}" rel="stylesheet">
         @stack('styles')
     </head>
 
@@ -66,5 +68,6 @@
 
         <!-- Template Javascript -->
         <script src="{{ asset('template_user/js/main.js') }}"></script>
+        @stack('scripts')
     </body>
 </html>

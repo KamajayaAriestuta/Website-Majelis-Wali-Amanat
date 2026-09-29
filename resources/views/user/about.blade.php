@@ -1,68 +1,107 @@
 @extends('user.layouts.base')
-@section('content')
 
-<!-- About Start -->
-<div class="about wow fadeInUp" data-wow-delay="0.1s">
+@php
+    $tugas = [
+        'Menetapkan kebijakan umum nonakademik UB',
+        'Menetapkan Peraturan MWA',
+        'Menyetujui usul perubahan Statuta UB',
+        'Menetapkan norma dan tolok ukur kinerja UB bersama SAU',
+        'Menetapkan rencana induk pengembangan, rencana strategis, dan rencana anggaran tahunan yang diusulkan Rektor',
+        'Mengawasi pengelolaan dan pengendalian umum atas pengelolaan nonakademik UB',
+        'Mengangkat dan memberhentikan ketua dan/atau anggota KA',
+        'Mengangkat dan memberhentikan anggota kehormatan MWA',
+        'Mengangkat dan memberhentikan Rektor',
+        'Melakukan penilaian tahunan atas kinerja Rektor',
+        'Membuat keputusan tertinggi terhadap permasalahan yang tidak dapat diselesaikan oleh Rektor dan SAU',
+        'Membangun dan membina jejaring dengan individu, institusi, dan/atau organisasi di luar UB',
+        'Memberikan pertimbangan dan melakukan pengawasan dalam rangka mengembangkan kekayaan dan menjaga kesehatan keuangan UB',
+        'Menyusun dan menyampaikan laporan tahunan kepada Menteri bersama Rektor',
+    ];
+@endphp
+
+@section('content')
+<x-user.page-header judul="Tentang Majelis Wali Amanat" label="Tentang"
+    deskripsi="Kedudukan, fungsi, dan tugas Majelis Wali Amanat sebagai organ Universitas Brawijaya menurut PP 108 Tahun 2021." />
+
+<!-- Profil Start -->
+<section class="hm-section">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-5 col-md-6">
-                <div class="about-img">
-                    <img src="{{ asset('template_user/img/about.jpg') }}" alt="Image">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <div class="hm-about-img">
+                    <img src="{{ asset('template_user/img/about.jpg') }}" alt="Rapat Majelis Wali Amanat Universitas Brawijaya" loading="lazy">
+                    <div class="hm-about-badge">
+                        <strong>PP 108</strong>
+                        <span>Tahun 2021 tentang PTN-BH Universitas Brawijaya</span>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-7 col-md-6">
-                <div class="section-header text-left">
-                    <p>Menurut PP 108 Tahun 2021</p>
-                    <h2>Tentang Majelis Wali Amanat</h2>
-                </div>
-                <div class="about-text">
-                    <p>
-                        Majelis Wali Amanat yang selanjutnya disingkat
-                        MWA adalah organ UB yang menyrusun,
-                        merumuskan dan menetapkan kebijakan,
-                        memberikan pertimbangan pelaksanaan kebijakan
-                        umum, serta melaksanakan pengawasan di bidang
-                        nonakademik.
-                    </p>
+            <div class="col-lg-6 pl-lg-5">
+                <span class="hm-kicker">Menurut PP 108 Tahun 2021</span>
+                <h2 class="hm-title">Apa itu Majelis Wali Amanat?</h2>
+                <p class="hm-lead">
+                    Majelis Wali Amanat yang selanjutnya disingkat MWA adalah organ UB yang menyusun,
+                    merumuskan, dan menetapkan kebijakan, memberikan pertimbangan pelaksanaan kebijakan
+                    umum, serta melaksanakan pengawasan di bidang nonakademik.
+                </p>
+                <div class="mw-pillars">
+                    <div class="mw-pillar">
+                        <i class="fa fa-landmark"></i>
+                        <div>
+                            <strong>Kebijakan</strong>
+                            <span>Menyusun, merumuskan, dan menetapkan kebijakan</span>
+                        </div>
+                    </div>
+                    <div class="mw-pillar">
+                        <i class="fa fa-comments"></i>
+                        <div>
+                            <strong>Pertimbangan</strong>
+                            <span>Memberikan pertimbangan pelaksanaan kebijakan umum</span>
+                        </div>
+                    </div>
+                    <div class="mw-pillar">
+                        <i class="fa fa-search"></i>
+                        <div>
+                            <strong>Pengawasan</strong>
+                            <span>Melaksanakan pengawasan di bidang nonakademik</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- About End -->
+</section>
+<!-- Profil End -->
 
-<!-- About Start -->
-<div class="about wow fadeInUp" data-wow-delay="0.1s">
+<!-- Tugas Start -->
+<section class="hm-section hm-section-alt">
     <div class="container">
-        <div class="row align-items-start">
-            <div class="col-12">
-                <div class="section-header text-left mb-4">
-                    <h2 class="fw-bold">Tugas Majelis Wali Amanat</h2>
-                </div>
-                <div class="about-text">
-                    <ol class="list-group list-group-numbered">
-                        <li class="list-group-item">Menetapkan kebijakan umum nonakademik UB</li>
-                        <li class="list-group-item">Menetapkan Peraturan MWA</li>
-                        <li class="list-group-item">Menyetujui usul perubahan Statuta UB</li>
-                        <li class="list-group-item">Menetapkan norma dan tolok ukur kinerja UB bersama SAU</li>
-                        <li class="list-group-item">Menetapkan rencana induk pengembangan, rencana strategis, dan rencana anggaran tahunan yang diusulkan Rektor</li>
-                        <li class="list-group-item">Mengawasi pengelolaan dan pengendalian umum atas pengelolaan nonakademik UB</li>
-                        <li class="list-group-item">Mengangkat dan memberhentikan ketua dan/atau anggota KA</li>
-                        <li class="list-group-item">Mengangkat dan memberhentikan anggota kehormatan MWA</li>
-                        <li class="list-group-item">Mengangkat dan memberhentikan Rektor</li>
-                        <li class="list-group-item">Melakukan penilaian tahunan atas kinerja Rektor</li>
-                        <li class="list-group-item">Membuat keputusan tertinggi terhadap permasalahan yang tidak dapat diselesaikan oleh Rektor dan SAU</li>
-                        <li class="list-group-item">Membangun dan membina jejaring dengan individu, institusi, dan/atau organisasi di luar UB</li>
-                        <li class="list-group-item">Memberikan pertimbangan dan melakukan pengawasan dalam rangka mengembangkan kekayaan dan menjaga kesehatan keuangan UB</li>
-                        <li class="list-group-item">Menyusun dan menyampaikan laporan tahunan kepada Menteri bersama Rektor</li>
-                    </ol>
-                </div>
+        <div class="hm-section-head">
+            <div>
+                <span class="hm-kicker">Tugas</span>
+                <h2 class="hm-title">Tugas Majelis Wali Amanat</h2>
             </div>
         </div>
+        <ol class="mw-duties">
+            @foreach ($tugas as $butir)
+            <li>{{ $butir }}</li>
+            @endforeach
+        </ol>
     </div>
-</div>
+</section>
+<!-- Tugas End -->
 
-<!-- About End -->
-
+<!-- CTA Start -->
+<section class="hm-cta">
+    <div class="container">
+        <div class="hm-cta-inner">
+            <div>
+                <h2>Kenali anggota Majelis Wali Amanat</h2>
+                <p>Lihat susunan pimpinan, anggota, dan Komite Audit beserta dasar pengangkatannya.</p>
+            </div>
+            <a href="{{ route('user.mwateam') }}" class="hm-btn hm-btn-dark">Lihat Anggota</a>
+        </div>
+    </div>
+</section>
+<!-- CTA End -->
 @endsection
-            
