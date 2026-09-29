@@ -8,9 +8,7 @@
     position: relative;
     padding: 70px 0 60px;
     color: #ffffff;
-    background:
-        radial-gradient(circle at 85% 20%, rgba(253, 190, 51, .18), transparent 45%),
-        linear-gradient(135deg, var(--hm-navy) 0%, var(--hm-navy-soft) 100%);
+    background: linear-gradient(135deg, var(--hm-navy) 0%, var(--hm-navy-soft) 100%);
     overflow: hidden;
 }
 
